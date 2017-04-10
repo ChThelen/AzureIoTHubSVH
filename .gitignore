@@ -7,3 +7,5 @@
 /DotnetProvisionDevice/bin
 /DotnetProvisionDevice/obj
 /deviceCred.json
+/DotnetSharedTypes/obj
+/DotnetSharedTypes/bin
