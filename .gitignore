@@ -6,3 +6,4 @@
 /.vs/AzureIoTHubSVH/v15/*.suo
 /DotnetProvisionDevice/bin
 /DotnetProvisionDevice/obj
+/deviceCred.json

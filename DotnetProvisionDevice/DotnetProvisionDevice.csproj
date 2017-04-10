@@ -86,5 +86,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotnetSharedTypes\DotnetSharedTypes.csproj">
+      <Project>{d22cf4e6-4d32-4f4b-a0e0-6bbcb1d1cb1b}</Project>
+      <Name>DotnetSharedTypes</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
