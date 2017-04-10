@@ -1,5 +1,6 @@
 package de.qaware.pn.api;
 
+import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import com.microsoft.azure.storage.StorageException;
 import de.qaware.pn.service.IotHubConnection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,9 @@ public class Backend {
         System.out.println("sending " + deviceId);
         Object resultPayload = null;
         try {
-            resultPayload = iotHubConnection.callMethod("device1234","testMethod", "refresh your data");
-        } catch (IOException e) {
+            iotHubConnection.sendMessageToDevice(deviceId);
+//            resultPayload = iotHubConnection.callMethod("device1234","testMethod", "refresh your data");
+        } catch (IOException | InterruptedException | IotHubException e) {
             e.printStackTrace();
         }
 

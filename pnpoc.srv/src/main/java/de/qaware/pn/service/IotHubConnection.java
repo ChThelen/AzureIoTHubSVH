@@ -1,7 +1,6 @@
 package de.qaware.pn.service;
 
-import com.microsoft.azure.sdk.iot.service.Device;
-import com.microsoft.azure.sdk.iot.service.RegistryManager;
+import com.microsoft.azure.sdk.iot.service.*;
 import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceMethod;
 import com.microsoft.azure.sdk.iot.service.devicetwin.MethodResult;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
@@ -25,6 +24,37 @@ public class IotHubConnection {
     public static final String iotHubConnectionString = "HostName=SVH-Hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=GeAJP5SptyRWHQibFNyB1J8u9gdWV1TdoVEIaFMv1sU=";
     public static final Long responseTimeout = TimeUnit.SECONDS.toSeconds(200);
     public static final Long connectTimeout = TimeUnit.SECONDS.toSeconds(5);
+
+    private final ServiceClient serviceClient;
+
+    public IotHubConnection() throws IOException, IotHubException, InterruptedException {
+        serviceClient = ServiceClient.createFromConnectionString(
+                iotHubConnectionString, IotHubServiceClientProtocol.AMQPS);
+    }
+
+    public void sendMessageToDevice(String deviceId) throws IOException, IotHubException, InterruptedException {
+        if (serviceClient != null) {
+            serviceClient.open();
+            FeedbackReceiver feedbackReceiver = serviceClient
+                    .getFeedbackReceiver(deviceId);
+            if (feedbackReceiver != null) feedbackReceiver.open();
+
+            Message messageToSend = new Message("Cloud to device message.");
+            messageToSend.setDeliveryAcknowledgement(DeliveryAcknowledgement.Full);
+
+            serviceClient.send(deviceId, messageToSend);
+            System.out.println("Message sent to device");
+
+            FeedbackBatch feedbackBatch = feedbackReceiver.receive(10000);
+            if (feedbackBatch != null) {
+                System.out.println("Message feedback received, feedback time: "
+                        + feedbackBatch.getEnqueuedTimeUtc().toString());
+            }
+
+            if (feedbackReceiver != null) feedbackReceiver.close();
+            serviceClient.close();
+        }
+    }
 
     public String getContainerSasUri(CloudBlobContainer container) throws InvalidKeyException, StorageException {
         //Set the expiry time and permissions for the container.
