@@ -1,4 +1,17 @@
-# Created by .ignore support plugin (hsz.mobi)
+/DotnetBackend/obj
+/DotnetBackend/bin
+/DotnetSimulatedDevice/bin
+/DotnetSimulatedDevice/obj
+/packages
+/.vs/AzureIoTHubSVH/v15/*.suo
+/DotnetProvisionDevice/bin
+/DotnetProvisionDevice/obj
+/deviceCred.json
+/DotnetSharedTypes/obj
+/DotnetSharedTypes/bin
+/DotnetShared/bin
+/DotnetShared/obj
+
 ### Maven template
 target/
 pom.xml.tag
