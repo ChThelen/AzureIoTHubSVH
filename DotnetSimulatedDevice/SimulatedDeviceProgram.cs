@@ -6,7 +6,7 @@
     using System.IO;
     using System.Threading.Tasks;
 
-    class DotnetSimulatedDevice
+    class SimulatedDeviceProgram
     {
         static void Main(string[] args) { MainAsync(args).Wait(); }
 
@@ -26,8 +26,7 @@
 
             var credPath = @"..\..\..\deviceCred.json";
 
-            var cred = JsonConvert.DeserializeObject<DeviceCredentials>(File.ReadAllText(credPath));
-            return cred;
+            return JsonConvert.DeserializeObject<DeviceCredentials>(File.ReadAllText(credPath));
         }
     }
 }

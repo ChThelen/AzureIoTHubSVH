@@ -114,7 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="SimulatedDeviceProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -122,9 +122,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotnetSharedTypes\DotnetSharedTypes.csproj">
-      <Project>{d22cf4e6-4d32-4f4b-a0e0-6bbcb1d1cb1b}</Project>
-      <Name>DotnetSharedTypes</Name>
+    <ProjectReference Include="..\DotnetShared\DotnetShared.csproj">
+      <Project>{43c6bfaf-177d-4731-a48d-1af7a535956e}</Project>
+      <Name>DotnetShared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

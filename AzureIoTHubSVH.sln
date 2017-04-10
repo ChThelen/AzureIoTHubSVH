@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetSimulatedDevice", "Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetProvisionDevice", "DotnetProvisionDevice\DotnetProvisionDevice.csproj", "{C2150715-66B0-4A4B-A932-2C1D39FF7E46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetSharedTypes", "DotnetSharedTypes\DotnetSharedTypes.csproj", "{D22CF4E6-4D32-4F4B-A0E0-6BBCB1D1CB1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetShared", "DotnetShared\DotnetShared.csproj", "{43C6BFAF-177D-4731-A48D-1AF7A535956E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{C2150715-66B0-4A4B-A932-2C1D39FF7E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2150715-66B0-4A4B-A932-2C1D39FF7E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2150715-66B0-4A4B-A932-2C1D39FF7E46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D22CF4E6-4D32-4F4B-A0E0-6BBCB1D1CB1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D22CF4E6-4D32-4F4B-A0E0-6BBCB1D1CB1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D22CF4E6-4D32-4F4B-A0E0-6BBCB1D1CB1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D22CF4E6-4D32-4F4B-A0E0-6BBCB1D1CB1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43C6BFAF-177D-4731-A48D-1AF7A535956E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43C6BFAF-177D-4731-A48D-1AF7A535956E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43C6BFAF-177D-4731-A48D-1AF7A535956E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43C6BFAF-177D-4731-A48D-1AF7A535956E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
