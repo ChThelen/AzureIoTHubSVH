@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetBackend", "DotnetBackend\DotnetBackend.csproj", "{F27334B0-8A30-470F-BA2E-53F1197283B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetSimulatedDevice", "DotnetSimulatedDevice\DotnetSimulatedDevice.csproj", "{718D5032-CDD7-4802-8BA2-E5E9F7689F9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F27334B0-8A30-470F-BA2E-53F1197283B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F27334B0-8A30-470F-BA2E-53F1197283B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F27334B0-8A30-470F-BA2E-53F1197283B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F27334B0-8A30-470F-BA2E-53F1197283B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{718D5032-CDD7-4802-8BA2-E5E9F7689F9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{718D5032-CDD7-4802-8BA2-E5E9F7689F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{718D5032-CDD7-4802-8BA2-E5E9F7689F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{718D5032-CDD7-4802-8BA2-E5E9F7689F9F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
