@@ -2,3 +2,5 @@
 /DotnetBackend/bin
 /DotnetSimulatedDevice/bin
 /DotnetSimulatedDevice/obj
+/packages
+/.vs/AzureIoTHubSVH/v15/*.suo
