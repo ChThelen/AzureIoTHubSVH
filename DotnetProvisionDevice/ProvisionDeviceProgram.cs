@@ -5,19 +5,12 @@
     using Microsoft.Azure.Devices.Common.Exceptions;
     using Newtonsoft.Json;
     using System;
-    using System.Linq;
-    using System.Globalization;
     using System.IO;
-    using System.Net;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Threading.Tasks;
 
     class ProvisionDeviceProgram
     {
         static void Main(string[] args) { MainAsync(args).Wait(); }
-
-        
 
         public static async Task MainAsync(string[] args)
         {
@@ -40,22 +33,21 @@
                 device = await registryManager.GetDeviceAsync(deviceId: deviceId);
             }
 
+            var twin = await registryManager.GetTwinAsync(deviceId: device.Id);
+
 
             // Console.WriteLine($"{device.GenerationId} {device.Id} {device.Authentication.SymmetricKey.PrimaryKey}");
-
             // https://github.com/Azure/azure-content-nlnl/blob/master/articles/iot-hub/iot-hub-guidance.md#customauth
-
-
-            var sas = connectionString
-                .ParseAzureIoTHubConnectionString()
-                .GetSASToken(
+            var hub = connectionString
+                .ParseAzureIoTHubConnectionString();
+            var sas = hub.GetSASToken(
                     deviceId: device.Id, 
                     duration: TimeSpan.FromHours(1));
-
             var cred = new DeviceCredentials
             {
                 DeviceId = device.Id,
-                PrimaryKey = device.Authentication.SymmetricKey.PrimaryKey
+                Hostname = hub.HostName,
+                SharedAccessSignature = sas
             };
 
             var credPath = @"..\..\..\deviceCred.json";

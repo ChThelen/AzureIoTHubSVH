@@ -39,6 +39,8 @@
 
         public static string GetSASToken(this IoTHubConnectionStringParams hub, string deviceId, TimeSpan duration)
         {
+            string policyName = "device";
+
             var baseAddress = $"{hub.HostName}/devices/{deviceId}".ToLower();
             TimeSpan fromEpochStart = DateTime.UtcNow - new DateTime(1970, 1, 1);
             string expiry = Convert.ToString((int)fromEpochStart.TotalSeconds + duration.TotalSeconds);
@@ -48,7 +50,7 @@
             var hmac = new HMACSHA256(hub.SharedAccessKey);
             byte[] sig = hmac.ComputeHash(Encoding.UTF8.GetBytes(stringToSign));
 
-            return $"SharedAccessSignature sr={WebUtility.UrlEncode(baseAddress).ToLower()}&se={expiry}&sig={WebUtility.UrlEncode(Convert.ToBase64String(sig))}";
+            return $"SharedAccessSignature sr={WebUtility.UrlEncode(baseAddress).ToLower()}&se={expiry}&skn={policyName}&sig={WebUtility.UrlEncode(Convert.ToBase64String(sig))}";
         }
     }
 }

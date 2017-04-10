@@ -1,6 +1,7 @@
 ﻿namespace DotnetSimulatedDevice
 {
     using DotnetSharedTypes;
+    using Microsoft.Azure.Devices.Client;
     using Newtonsoft.Json;
     using System;
     using System.IO;
@@ -15,15 +16,20 @@
             Console.Title = "Device";
 
             var cred = await LogonToBackendAsync();
-            Console.WriteLine($"I am {cred.DeviceId}");
+            var client = DeviceClient.Create(
+                hostname: cred.Hostname,
+                authenticationMethod: new DeviceAuthenticationWithToken(
+                    deviceId: cred.DeviceId,
+                    token: cred.SharedAccessSignature));
 
+            var twin = await client.GetTwinAsync();
+            Console.WriteLine($"{twin.DeviceId}");
         }
 
         public static async Task<DeviceCredentials> LogonToBackendAsync()
         {
             // Make an authenticated REST call to the PushMessage-Backend, and retrieve DeviceID and SAS for IoT Hub.
             // in our simulated environment, get data from local file
-
             var credPath = @"..\..\..\deviceCred.json";
 
             return JsonConvert.DeserializeObject<DeviceCredentials>(File.ReadAllText(credPath));
