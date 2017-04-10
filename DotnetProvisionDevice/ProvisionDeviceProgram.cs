@@ -10,10 +10,7 @@
 
     class Program
     {
-        static void Main(string[] args)
-        {
-            MainAsync(args).Wait();
-        }
+        static void Main(string[] args) { MainAsync(args).Wait(); }
 
         public static async Task MainAsync(string[] args)
         {
@@ -36,7 +33,10 @@
                 device = await registryManager.GetDeviceAsync(deviceId: deviceId);
             }
 
+
             // Console.WriteLine($"{device.GenerationId} {device.Id} {device.Authentication.SymmetricKey.PrimaryKey}");
+
+            // https://github.com/Azure/azure-content-nlnl/blob/master/articles/iot-hub/iot-hub-guidance.md#customauth
 
             var cred = new DeviceCredentials
             {
@@ -47,6 +47,9 @@
             var credPath = @"..\..\..\deviceCred.json";
             File.WriteAllText(credPath, JsonConvert.SerializeObject(cred));
             Console.WriteLine($"Wrote device credential to {new FileInfo(credPath).FullName}");
+
+
+
         }
     }
 }
