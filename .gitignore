@@ -133,3 +133,4 @@ hs_err_pid*
 /pnpoc.srv/mvnw.cmd
 !/pnpoc.srv/mvnw
 !/pnpoc.srv/mvnw.cmd
+/pnpoc.srv/.mvn/
