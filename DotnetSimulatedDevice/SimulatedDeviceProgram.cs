@@ -15,12 +15,19 @@
         {
             Console.Title = "Device";
 
-            var cred = await LogonToBackendAsync();
+            var deviceId = "id:device:000001";
+            var sas = Environment.GetEnvironmentVariable("AZURE_IOT_HUB_OWNER_KEY")
+                .ParseAzureIoTHubConnectionString()
+                .GetSASToken(
+                    deviceId: deviceId,
+                    duration: TimeSpan.FromHours(1));
+
+            
+            // var cred = await LogonToBackendAsync();
             var client = DeviceClient.Create(
-                hostname: cred.Hostname,
-                authenticationMethod: new DeviceAuthenticationWithToken(
-                    deviceId: cred.DeviceId,
-                    token: cred.SharedAccessSignature));
+                hostname: Environment.GetEnvironmentVariable("AZURE_IOT_HUB_OWNER_KEY").ParseAzureIoTHubConnectionString().HostName,
+                authenticationMethod: new DeviceAuthenticationWithToken(deviceId: deviceId, token: sas),
+                transportType: TransportType.Mqtt_WebSocket_Only);
 
             var twin = await client.GetTwinAsync();
             Console.WriteLine($"{twin.DeviceId}");

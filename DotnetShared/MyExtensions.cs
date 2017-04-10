@@ -41,16 +41,17 @@
         {
             string policyName = "device";
 
-            var baseAddress = $"{hub.HostName}/devices/{deviceId}".ToLower();
+            var sr = WebUtility.UrlEncode($"{hub.HostName}/devices/{deviceId}".ToLower());
+
             TimeSpan fromEpochStart = DateTime.UtcNow - new DateTime(1970, 1, 1);
-            string expiry = Convert.ToString((int)fromEpochStart.TotalSeconds + duration.TotalSeconds);
+            var se = Convert.ToString((int)fromEpochStart.TotalSeconds + duration.TotalSeconds);
 
-            string stringToSign = WebUtility.UrlEncode(baseAddress).ToLower() + "\n" + expiry;
-
+            var stringToSign = sr + "\n" + se;
             var hmac = new HMACSHA256(hub.SharedAccessKey);
-            byte[] sig = hmac.ComputeHash(Encoding.UTF8.GetBytes(stringToSign));
+            var sigBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(stringToSign));
+            var sig = WebUtility.UrlEncode(Convert.ToBase64String(sigBytes));
 
-            return $"SharedAccessSignature sr={WebUtility.UrlEncode(baseAddress).ToLower()}&se={expiry}&skn={policyName}&sig={WebUtility.UrlEncode(Convert.ToBase64String(sig))}";
+            return $"SharedAccessSignature sr={sr}&sig={sig}&se={se}"; // + $"&skn={policyName}";
         }
     }
 }
