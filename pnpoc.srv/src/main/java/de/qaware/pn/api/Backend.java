@@ -36,7 +36,7 @@ public class Backend {
             e.printStackTrace();
         }
 
-        return resultPayload.toString();
+        return "ok";
     }
 
     @RequestMapping("sas")
