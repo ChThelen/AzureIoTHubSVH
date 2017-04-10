@@ -7,11 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="pnpoc" />
+        <module name="pnpoc.client" />
         <module name="pnpoc.srv" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="pnpoc" target="1.5" />
+      <module name="pnpoc.client" target="1.5" />
       <module name="pnpoc.srv" target="1.8" />
     </bytecodeTargetLevel>
   </component>
