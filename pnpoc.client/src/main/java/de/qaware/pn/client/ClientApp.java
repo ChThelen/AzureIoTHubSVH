@@ -4,13 +4,9 @@ import com.microsoft.azure.sdk.iot.device.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ClientApp {
-    private static String connString = "";
     private static IotHubClientProtocol protocol = IotHubClientProtocol.MQTT;
-    private static DeviceClient client;
 
     private static class AppMessageCallback implements MessageCallback {
         public IotHubMessageResult execute(Message msg, Object context) {
@@ -22,7 +18,8 @@ public class ClientApp {
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        client = new DeviceClient(connString, protocol);
+        String connString = "HostName=SVH-Hub.azure-devices.net;DeviceId=mydevice456;SharedAccessKey=OuwhNbfmQMlOjCducT8SXg==";
+        DeviceClient client = new DeviceClient(connString, protocol);
 
         MessageCallback callback = new AppMessageCallback();
         client.setMessageCallback(callback, null);
