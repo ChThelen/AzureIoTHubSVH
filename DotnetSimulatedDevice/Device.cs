@@ -7,7 +7,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    class SimulatedDeviceProgram
+    class Device
     {
         static void Main(string[] args) { MainAsync(args).Wait(); }
 
@@ -26,8 +26,11 @@
 
             while (true) {
                 var message = await client.ReceiveAsync();
-                Console.WriteLine($"Message {message.MessageId}");
-                await client.CompleteAsync(message);
+                if (message != null)
+                {
+                    Console.WriteLine($"Message {message.MessageId}");
+                    await client.CompleteAsync(message);
+                }
             }
 
             // Console.Write("Press <return> to close client device"); Console.ReadLine();
@@ -36,21 +39,25 @@
         public static async Task<DeviceClient> GetClientAsync(string deviceId)
         {
             var creds = await MyExtensions.GetDeviceCredentialsAsync(deviceId);
+
             return DeviceClient.Create(
                 hostname: creds.Hostname,
                 authenticationMethod: new DeviceAuthenticationWithToken(
                     deviceId: deviceId,
                     token: creds.SharedAccessSignature), 
-                transportType: TransportType.Mqtt_WebSocket_Only);
+                transportType: TransportType.Mqtt_Tcp_Only);
         }
 
         static async Task<MethodResponse> SomeMethodAsync(MethodRequest methodRequest, object userContext)
         {
-            Console.WriteLine($"Running SomeMethodAsync({ methodRequest.DataAsJson })");
             // await Task.Delay(TimeSpan.FromSeconds(2));
-            var result = Encoding.UTF8.GetBytes("Hallo");
+            Console.WriteLine($"Running SomeMethodAsync({ methodRequest.DataAsJson })");
+            var result = Encoding.UTF8.GetBytes(@"{ 
+                'reply': 'Hallo' 
+            }");
 
-            Console.WriteLine($"Sending Response back");
+            // MethodResponse has a bad API. It accepts arbitraty byte[]s, but internally checks for JSON 
+            // https://github.com/Azure/azure-iot-sdk-csharp/blob/master/device/Microsoft.Azure.Devices.Client/MethodResponse.cs#L48
             return new MethodResponse(result, 200);
         }
     }

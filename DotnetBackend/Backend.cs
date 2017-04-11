@@ -7,7 +7,7 @@
     using System.Collections.Generic;
     using DotnetShared;
 
-    class Program
+    class Backend
     {
         static void Main(string[] args) { MainAsync(args).Wait(); }
 
@@ -23,16 +23,17 @@
             Console.ReadLine();
 
             var cloudToDeviceMethod = new CloudToDeviceMethod(
-                    methodName: "some.method",
-                    responseTimeout: TimeSpan.FromSeconds(5),
-                    connectionTimeout: TimeSpan.FromMinutes(1));
-            cloudToDeviceMethod.SetPayloadJson(@"{ fwPackageUri : 'https://someurl' }");
+                    methodName: "some.method"
+                    //responseTimeout: TimeSpan.FromSeconds(5),
+                    //connectionTimeout: TimeSpan.FromMinutes(1));
+                    );
+            cloudToDeviceMethod.SetPayloadJson(@"{ 
+                fwPackageUri : 'https://someurl' 
+            }");
 
-            var serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
-            
-            var result = await serviceClient.InvokeDeviceMethodAsync(deviceId: deviceId, cloudToDeviceMethod: cloudToDeviceMethod);
-
-            return;
+            // var serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
+            // var result = await serviceClient.InvokeDeviceMethodAsync(deviceId: deviceId, cloudToDeviceMethod: cloudToDeviceMethod);
+            // Console.WriteLine($"Client answered {result.GetPayloadAsJson()}");
 
 
             var jobClient = JobClient.CreateFromConnectionString(connectionString);

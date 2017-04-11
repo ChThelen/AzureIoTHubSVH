@@ -1,23 +1,22 @@
 ﻿namespace DotnetProvisionDevice
 {
-    using DotnetShared;
-    using DotnetSharedTypes;
-    using Microsoft.Azure.Devices;
-    using Microsoft.Owin.Hosting;
-    using Owin;
     using System;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using Microsoft.Azure.Devices;
+    using Microsoft.Owin.Hosting;
+    using Owin;
+    using DotnetShared;
+    using DotnetSharedTypes;
 
-    class ProvisionDeviceProgram
+    class Provisioner
     {
         static void Main(string[] args)
         {
             Console.Title = "Device Provisioning Service";
             using (WebApp.Start<Startup>(Constants.ProvisioningServer))
             {
-                Console.WriteLine("Press <return> to close");
-                Console.ReadLine();
+                Console.WriteLine("Press <return> to close"); Console.ReadLine();
             }
         }
     }
@@ -75,18 +74,33 @@
             }
             device = await registryManager.AddDeviceAsync(new Device(id: deviceId));
 
-            await SetTwinData(deviceId);
+            await UpdateTwinData(deviceId);
 
             return device;
         }
 
-        private async Task SetTwinData(string deviceId)
+        private async Task UpdateTwinData(string deviceId)
         {
             // https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-csharp-node-twin-getstarted
             var twin = await registryManager.GetTwinAsync(deviceId: deviceId);
-            twin.Tags["location"] = new { region = "Germany" }; 
-            twin.Properties.Desired["SoftwareVersion"] = "1.2.3.4";
-            await registryManager.UpdateTwinAsync(deviceId: deviceId, twinPatch: twin, etag: twin.ETag);
+
+            var patch = @"{
+                'tags': {
+                    'location': {
+                        'region': 'Germany'
+                    }
+                },
+                'properties': {
+                    'desired': {
+                        'SoftwareVersion': '1.2'
+                    }
+                }
+            }";
+
+            // twin.Tags["location"] = new { region = "Germany" }; 
+            // twin.Properties.Desired["SoftwareVersion"] = "1.2.3.4";
+
+            await registryManager.UpdateTwinAsync(deviceId: deviceId, jsonTwinPatch: patch, etag: twin.ETag);
         }
     }
 }
