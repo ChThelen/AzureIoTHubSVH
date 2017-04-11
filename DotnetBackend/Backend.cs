@@ -40,16 +40,16 @@
             var jobs = (await registryManager.GetJobsAsync()).ToList();
 
             // https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-query-language
-            Func<string, string> devicesInCountry = (country) => $"SELECT * FROM devices WHERE tags.location.region = '{country}'";
-            Func<string> allDevices = () => "SELECT * FROM devices";
+            Func<string, string> devicesInCountry = (country) => $"tags.location.region = '{country}'";
+            Func<string> allDevices = () => "";
             Func<IEnumerable<string>, string> allDevicesInGroup = (deviceIds) => $"deviceId IN [{  string.Join(",", deviceIds.Select(_ => $"'{_}'").ToArray()) }]";
 
             var jobId = Guid.NewGuid().ToString();
             var jobResponse = await jobClient.ScheduleDeviceMethodAsync(
                 jobId: jobId,
-                // queryCondition: devicesInCountry("Germany"),
+                queryCondition: devicesInCountry("Germany"),
                 // queryCondition: allDevicesInGroup(new[] { deviceId }),
-                queryCondition: allDevices(),
+                // queryCondition: allDevices(),
                 cloudToDeviceMethod: cloudToDeviceMethod,
                 startTimeUtc: DateTime.UtcNow.AddSeconds(1),
                 maxExecutionTimeInSeconds: (long)TimeSpan.FromMinutes(4).TotalSeconds);
