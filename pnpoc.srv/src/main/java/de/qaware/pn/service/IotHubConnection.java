@@ -28,7 +28,7 @@ public class IotHubConnection {
 
     public IotHubConnection() throws IOException, IotHubException, InterruptedException {
         serviceClient = ServiceClient.createFromConnectionString(
-                iotHubConnectionStringForRegistry, IotHubServiceClientProtocol.AMQPS);
+                iotHubConnectionStringForService, IotHubServiceClientProtocol.AMQPS);
         registryManager = RegistryManager.createFromConnectionString(iotHubConnectionStringForRegistry);
     }
 
@@ -62,7 +62,7 @@ public class IotHubConnection {
             String resourceUri = "SVH-Hub.azure-devices.net/devices/" + deviceId;
             resourceUri = URLEncoder.encode(resourceUri, "UTF-8");
 
-            long expires = Instant.now().plus(5, ChronoUnit.MINUTES).getEpochSecond();
+            long expires = Instant.now().plus(1, ChronoUnit.MINUTES).getEpochSecond();
 
             Device device = registryManager.getDevice(deviceId);
             Signature signature = new Signature(resourceUri, expires, device.getPrimaryKey());
