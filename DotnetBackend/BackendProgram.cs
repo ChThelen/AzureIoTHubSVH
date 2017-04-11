@@ -14,10 +14,6 @@ namespace DotnetBackend
             var key = Environment.GetEnvironmentVariable("AZURE_IOT_HUB_OWNER_KEY");
 
             Console.WriteLine($"{key}");
-
-            
-
-
         }
     }
 }

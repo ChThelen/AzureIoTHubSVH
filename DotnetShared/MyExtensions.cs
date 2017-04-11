@@ -1,10 +1,15 @@
 ﻿namespace DotnetSharedTypes
 {
+    using DotnetShared;
+    using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Threading.Tasks;
 
     public class IoTHubConnectionStringParams
     {
@@ -15,43 +20,42 @@
 
     public static class MyExtensions
     {
-        public static IoTHubConnectionStringParams ParseAzureIoTHubConnectionString(this string connectionString)
+        public static Dictionary<string, string> ParseConnectionString(this string connectionString)
         {
-            Func<string, Tuple<string,string>> GetKV = kv =>
-            {
-                var idx = kv.IndexOf('=');
-                return new Tuple<string, string>(
-                    kv.Substring(0, idx), 
-                    kv.Substring(idx + 1));
-            };
-
-            var pairs = connectionString.Split(';')
-                .Select(GetKV)
-                .ToDictionary(_ => _.Item1, _ => _.Item2);
-
-            return new IoTHubConnectionStringParams
-            {
-                HostName = pairs["HostName"],
-                SharedAccessKeyName = pairs["SharedAccessKeyName"],
-                SharedAccessKey = Convert.FromBase64String(pairs["SharedAccessKey"])
-            };
+            return connectionString.Split(';')
+                .ToDictionary(
+                    _ => _.Substring(0, _.IndexOf('=')), 
+                    _ => _.Substring(_.IndexOf('=') + 1));
         }
 
-        public static string GetSASToken(this IoTHubConnectionStringParams hub, string deviceId, TimeSpan duration)
+        public static string GetConnectionStringParameter(this string connectionString, string key)
         {
-            string policyName = "device";
+            return connectionString.ParseConnectionString()[key];
+        }
 
-            var sr = WebUtility.UrlEncode($"{hub.HostName}/devices/{deviceId}".ToLower());
+        public static string GetSASToken(string hubHostname, string deviceId, byte[] deviceKey, TimeSpan duration)
+        {
+            var sr = WebUtility.UrlEncode($"{hubHostname}/devices/{deviceId}".ToLower());
 
             TimeSpan fromEpochStart = DateTime.UtcNow - new DateTime(1970, 1, 1);
-            var se = Convert.ToString((int)fromEpochStart.TotalSeconds + duration.TotalSeconds);
+            var se = Convert.ToString((long)(fromEpochStart.TotalSeconds + duration.TotalSeconds));
 
-            var stringToSign = sr + "\n" + se;
-            var hmac = new HMACSHA256(hub.SharedAccessKey);
+            var stringToSign = $"{sr}\n{se}";
+            var hmac = new HMACSHA256(deviceKey);
             var sigBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(stringToSign));
             var sig = WebUtility.UrlEncode(Convert.ToBase64String(sigBytes));
 
             return $"SharedAccessSignature sr={sr}&sig={sig}&se={se}"; // + $"&skn={policyName}";
+        }
+
+        public static async Task<DeviceCredentials> GetDeviceCredentialsAsync(string deviceIdentifier)
+        {
+            using (var httpClient = new HttpClient { BaseAddress = new Uri(Constants.ProvisioningServer) })
+            {
+                var msg = await httpClient.GetAsync($"{Constants.ProvisioningServerPath}/{deviceIdentifier}");
+                var readTokenTask = await msg.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<DeviceCredentials>(readTokenTask);
+            }
         }
     }
 }

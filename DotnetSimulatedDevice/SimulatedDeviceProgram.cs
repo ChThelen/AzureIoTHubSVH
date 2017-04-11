@@ -2,9 +2,7 @@
 {
     using DotnetSharedTypes;
     using Microsoft.Azure.Devices.Client;
-    using Newtonsoft.Json;
     using System;
-    using System.IO;
     using System.Threading.Tasks;
 
     class SimulatedDeviceProgram
@@ -14,32 +12,22 @@
         public static async Task MainAsync(string[] args)
         {
             Console.Title = "Device";
+            Console.Write("Press <return"); Console.ReadLine();
 
-            var deviceId = "id:device:000001";
-            var sas = Environment.GetEnvironmentVariable("AZURE_IOT_HUB_OWNER_KEY")
-                .ParseAzureIoTHubConnectionString()
-                .GetSASToken(
-                    deviceId: deviceId,
-                    duration: TimeSpan.FromHours(1));
-
-            
-            // var cred = await LogonToBackendAsync();
-            var client = DeviceClient.Create(
-                hostname: Environment.GetEnvironmentVariable("AZURE_IOT_HUB_OWNER_KEY").ParseAzureIoTHubConnectionString().HostName,
-                authenticationMethod: new DeviceAuthenticationWithToken(deviceId: deviceId, token: sas),
-                transportType: TransportType.Mqtt_WebSocket_Only);
-
+            var client = await GetClientAsync(deviceId: "id:device:000001");
             var twin = await client.GetTwinAsync();
             Console.WriteLine($"{twin.DeviceId}");
         }
 
-        public static async Task<DeviceCredentials> LogonToBackendAsync()
+        public static async Task<DeviceClient> GetClientAsync(string deviceId)
         {
-            // Make an authenticated REST call to the PushMessage-Backend, and retrieve DeviceID and SAS for IoT Hub.
-            // in our simulated environment, get data from local file
-            var credPath = @"..\..\..\deviceCred.json";
-
-            return JsonConvert.DeserializeObject<DeviceCredentials>(File.ReadAllText(credPath));
+            var creds = await MyExtensions.GetDeviceCredentialsAsync(deviceId);
+            return DeviceClient.Create(
+                hostname: creds.Hostname,
+                authenticationMethod: new DeviceAuthenticationWithToken(
+                    deviceId: deviceId,
+                    token: creds.SharedAccessSignature), 
+                transportType: TransportType.Mqtt_WebSocket_Only);
         }
     }
 }
