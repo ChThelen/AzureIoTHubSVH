@@ -12,8 +12,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="AzureIoTHubSVH" target="1.5" />
       <module name="pnpoc" target="1.5" />
-      <module name="pnpoc.client" target="1.5" />
+      <module name="pnpoc.client" target="1.8" />
       <module name="pnpoc.srv" target="1.8" />
     </bytecodeTargetLevel>
   </component>
