@@ -71,8 +71,6 @@
             var device = await registryManager.GetDeviceAsync(deviceId: deviceId);
             if (device != null)
             {
-                var twin = await registryManager.GetTwinAsync(deviceId: deviceId);
-
                 return device;
             }
             device = await registryManager.AddDeviceAsync(new Device(id: deviceId));
@@ -84,6 +82,7 @@
 
         private async Task SetTwinData(string deviceId)
         {
+            // https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-csharp-node-twin-getstarted
             var twin = await registryManager.GetTwinAsync(deviceId: deviceId);
             twin.Tags["location"] = new { region = "Germany" }; 
             twin.Properties.Desired["SoftwareVersion"] = "1.2.3.4";
