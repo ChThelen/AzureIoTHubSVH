@@ -3,7 +3,6 @@
     using DotnetShared;
     using DotnetSharedTypes;
     using Microsoft.Azure.Devices;
-    using Microsoft.Azure.Devices.Common.Exceptions;
     using Microsoft.Owin.Hosting;
     using Owin;
     using System;
@@ -69,14 +68,12 @@
 
         private async Task<Device> GetOrCreateDeviceAync(string deviceId)
         {
-            try
+            var device = await registryManager.GetDeviceAsync(deviceId: deviceId);
+            if (device != null)
             {
-                return await registryManager.AddDeviceAsync(new Device(id: deviceId));
+                return device;
             }
-            catch (DeviceAlreadyExistsException)
-            {
-                return await registryManager.GetDeviceAsync(deviceId: deviceId);
-            }
+            return await registryManager.AddDeviceAsync(new Device(id: deviceId));
         }
     }
 }

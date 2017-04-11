@@ -36,10 +36,10 @@
       <HintPath>..\packages\Microsoft.Azure.Amqp.2.0.4\lib\net45\Microsoft.Azure.Amqp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Devices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Devices.1.2.4\lib\net451\Microsoft.Azure.Devices.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Devices.1.2.5\lib\net451\Microsoft.Azure.Devices.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Devices.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Devices.Shared.1.0.8\lib\net45\Microsoft.Azure.Devices.Shared.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Devices.Shared.1.0.9\lib\net45\Microsoft.Azure.Devices.Shared.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -79,9 +79,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
