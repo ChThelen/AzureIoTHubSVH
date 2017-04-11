@@ -1,6 +1,5 @@
-﻿namespace DotnetSharedTypes
+﻿namespace DotnetShared
 {
-    using DotnetShared;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;

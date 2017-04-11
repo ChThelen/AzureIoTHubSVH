@@ -1,10 +1,10 @@
 ﻿namespace DotnetBackend
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Azure.Devices;
-    using System.Collections.Generic;
     using DotnetShared;
 
     class Backend
@@ -16,6 +16,13 @@
             Console.Title = "Backend";
             var connectionString = Environment.GetEnvironmentVariable("AZURE_IOT_HUB_OWNER_KEY");
             var registryManager = RegistryManager.CreateFromConnectionString(connectionString);
+
+            //var query = registryManager.CreateQuery("SELECT * FROM devices");
+            //while (query.HasMoreResults)
+            //{
+            //    var page = await query.GetNextAsJsonAsync();
+            //    foreach (var x in page) { Console.WriteLine($"{x}"); }
+            //}
 
             var deviceId = Constants.DeviceID;
 
@@ -34,7 +41,6 @@
             // var serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
             // var result = await serviceClient.InvokeDeviceMethodAsync(deviceId: deviceId, cloudToDeviceMethod: cloudToDeviceMethod);
             // Console.WriteLine($"Client answered {result.GetPayloadAsJson()}");
-
 
             var jobClient = JobClient.CreateFromConnectionString(connectionString);
             var jobs = (await registryManager.GetJobsAsync()).ToList();

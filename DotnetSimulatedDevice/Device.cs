@@ -1,11 +1,10 @@
 ﻿namespace DotnetSimulatedDevice
 {
-    using DotnetShared;
-    using DotnetSharedTypes;
-    using Microsoft.Azure.Devices.Client;
     using System;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.Azure.Devices.Client;
+    using DotnetShared;
 
     class Device
     {
@@ -52,6 +51,7 @@
         {
             // await Task.Delay(TimeSpan.FromSeconds(2));
             Console.WriteLine($"Running SomeMethodAsync({ methodRequest.DataAsJson })");
+
             var result = Encoding.UTF8.GetBytes(@"{ 
                 'reply': 'Hallo' 
             }");

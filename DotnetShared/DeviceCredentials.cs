@@ -1,4 +1,4 @@
-﻿namespace DotnetSharedTypes
+﻿namespace DotnetShared
 {
     public class DeviceCredentials
     {

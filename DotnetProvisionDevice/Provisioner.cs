@@ -7,7 +7,6 @@
     using Microsoft.Owin.Hosting;
     using Owin;
     using DotnetShared;
-    using DotnetSharedTypes;
 
     class Provisioner
     {
@@ -86,8 +85,8 @@
 
             var patch = @"{
                 'tags': {
-                    'location': {
                         'region': 'Germany'
+                    'location': {
                     }
                 },
                 'properties': {
