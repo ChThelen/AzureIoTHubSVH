@@ -18,10 +18,10 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class IotHubConnection {
-    public static final String iotHubConnectionStringForRegistry = "HostName=SVH-Hub.azure-devices.net;SharedAccessKeyName=registryReadWrite;SharedAccessKey=svDdlDs6wb5x3upGXekO16sQYiY+1TpjaZvTYn/Pcoo=";
-    public static final String iotHubConnectionStringForService = "HostName=SVH-Hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=OJA4IUS+Vf7WPYqIwWDNLILXxBLJnPB0kf3WYDpT+dE=/Pcoo=";
-    public static final Long responseTimeout = TimeUnit.SECONDS.toSeconds(200);
-    public static final Long connectTimeout = TimeUnit.SECONDS.toSeconds(5);
+    private static final String iotHubConnectionStringForRegistry = "HostName=SVH-Hub.azure-devices.net;SharedAccessKeyName=registryReadWrite;SharedAccessKey=svDdlDs6wb5x3upGXekO16sQYiY+1TpjaZvTYn/Pcoo=";
+    private static final String iotHubConnectionStringForService = "HostName=SVH-Hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=OJA4IUS+Vf7WPYqIwWDNLILXxBLJnPB0kf3WYDpT+dE=/Pcoo=";
+    private static final Long responseTimeout = TimeUnit.SECONDS.toSeconds(200);
+    private static final Long connectTimeout = TimeUnit.SECONDS.toSeconds(5);
 
     private final ServiceClient serviceClient;
     private final RegistryManager registryManager;
@@ -37,7 +37,10 @@ public class IotHubConnection {
             serviceClient.open();
             FeedbackReceiver feedbackReceiver = serviceClient
                     .getFeedbackReceiver(deviceId);
-            if (feedbackReceiver != null) feedbackReceiver.open();
+            if (feedbackReceiver == null) {
+                throw new NullPointerException("Could not create FeedbackReceiver!");
+            }
+            feedbackReceiver.open();
 
             Message messageToSend = new Message("Cloud to device message.");
             messageToSend.setDeliveryAcknowledgement(DeliveryAcknowledgement.Full);
@@ -51,7 +54,7 @@ public class IotHubConnection {
                         + feedbackBatch.getEnqueuedTimeUtc().toString());
             }
 
-            if (feedbackReceiver != null) feedbackReceiver.close();
+            feedbackReceiver.close();
             serviceClient.close();
         }
     }
