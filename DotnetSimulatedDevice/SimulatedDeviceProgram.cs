@@ -3,6 +3,7 @@
     using DotnetSharedTypes;
     using Microsoft.Azure.Devices.Client;
     using System;
+    using System.Text;
     using System.Threading.Tasks;
 
     class SimulatedDeviceProgram
@@ -12,11 +13,17 @@
         public static async Task MainAsync(string[] args)
         {
             Console.Title = "Device";
-            Console.Write("Press <return"); Console.ReadLine();
+            Console.Write("Press <return> to start client device"); Console.ReadLine();
 
-            var client = await GetClientAsync(deviceId: "id:device:000001");
+            var deviceId = "id:device:000002";
+            var client = await GetClientAsync(deviceId: deviceId);
             var twin = await client.GetTwinAsync();
-            Console.WriteLine($"{twin.DeviceId}");
+
+            Console.WriteLine($"Desired Software Version: {twin.Properties.Desired["SoftwareVersion"]}");
+
+            await client.SetMethodHandlerAsync("some.method", SomeMethodAsync, null);
+
+            Console.Write("Press <return> to close client device"); Console.ReadLine();
         }
 
         public static async Task<DeviceClient> GetClientAsync(string deviceId)
@@ -28,6 +35,16 @@
                     deviceId: deviceId,
                     token: creds.SharedAccessSignature), 
                 transportType: TransportType.Mqtt_WebSocket_Only);
+        }
+
+        static async Task<MethodResponse> SomeMethodAsync(MethodRequest methodRequest, object userContext)
+        {
+            Console.WriteLine($"Running SomeMethodAsync({ methodRequest.DataAsJson })");
+            await Task.Delay(TimeSpan.FromSeconds(2));
+            var result = Encoding.UTF8.GetBytes("Hallo");
+
+            Console.WriteLine($"Sending Response back");
+            return new MethodResponse(result, 200);
         }
     }
 }

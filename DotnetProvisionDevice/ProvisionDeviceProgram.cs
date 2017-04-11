@@ -16,7 +16,7 @@
             Console.Title = "Device Provisioning Service";
             using (WebApp.Start<Startup>(Constants.ProvisioningServer))
             {
-                Console.Write("Press <return> to close");
+                Console.WriteLine("Press <return> to close");
                 Console.ReadLine();
             }
         }
@@ -71,9 +71,23 @@
             var device = await registryManager.GetDeviceAsync(deviceId: deviceId);
             if (device != null)
             {
+                var twin = await registryManager.GetTwinAsync(deviceId: deviceId);
+
                 return device;
             }
-            return await registryManager.AddDeviceAsync(new Device(id: deviceId));
+            device = await registryManager.AddDeviceAsync(new Device(id: deviceId));
+
+            await SetTwinData(deviceId);
+
+            return device;
+        }
+
+        private async Task SetTwinData(string deviceId)
+        {
+            var twin = await registryManager.GetTwinAsync(deviceId: deviceId);
+            twin.Tags["location"] = new { region = "Germany" }; 
+            twin.Properties.Desired["SoftwareVersion"] = "1.2.3.4";
+            await registryManager.UpdateTwinAsync(deviceId: deviceId, twinPatch: twin, etag: twin.ETag);
         }
     }
 }
