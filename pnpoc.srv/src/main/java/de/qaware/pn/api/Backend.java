@@ -28,10 +28,8 @@ public class Backend {
     @Consumes("application/json")
     public String sentPushMessage(@RequestBody String deviceId) {
         System.out.println("sending " + deviceId);
-        Object resultPayload = null;
         try {
             iotHubConnection.sendMessageToDevice(deviceId);
-//            resultPayload = iotHubConnection.callMethod("device1234","testMethod", "refresh your data");
         } catch (IOException | InterruptedException | IotHubException e) {
             e.printStackTrace();
         }
@@ -42,7 +40,7 @@ public class Backend {
     @RequestMapping("sas")
     public String getSas(@QueryParam("deviceId") String deviceId) {
         try {
-            return iotHubConnection.getContainerSasUri(null);
+            return iotHubConnection.getContainerSasToken(deviceId);
         } catch (InvalidKeyException | StorageException e) {
             e.printStackTrace();
         }
