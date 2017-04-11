@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class IotHubConnection {
-    public static final String iotHubConnectionString = "HostName=SVH-Hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=GeAJP5SptyRWHQibFNyB1J8u9gdWV1TdoVEIaFMv1sU=";
+    public static final String iotHubConnectionString = "HostName=SVH-Hub.azure-devices.net;SharedAccessKeyName=registryReadWrite;SharedAccessKey=svDdlDs6wb5x3upGXekO16sQYiY+1TpjaZvTYn/Pcoo=";
     public static final Long responseTimeout = TimeUnit.SECONDS.toSeconds(200);
     public static final Long connectTimeout = TimeUnit.SECONDS.toSeconds(5);
 
